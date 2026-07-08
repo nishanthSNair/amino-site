@@ -1,6 +1,7 @@
 import { AnnouncementBar } from "@/components/announcement-bar";
 import { Nav } from "@/components/nav";
 import { Hero } from "@/components/hero";
+import { TrustStrip } from "@/components/trust-strip";
 import { HowItWorks } from "@/components/how-it-works";
 import { Protocols } from "@/components/protocols";
 import { Products } from "@/components/products";
@@ -16,6 +17,7 @@ export default function Home() {
       <AnnouncementBar />
       <Nav />
       <Hero />
+      <TrustStrip />
       <HowItWorks />
       <Protocols />
       <Products />

@@ -1,15 +1,45 @@
+"use client";
+
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
+import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui";
-import { Reveal } from "@/components/motion";
+import { Reveal, Counter } from "@/components/motion";
 import { site } from "@/data/site";
 
 export function Hero() {
   const { media } = site.hero;
   const hasVideo = Boolean(media.video);
+  const ref = useRef<HTMLElement>(null);
+  const shouldReduce = useReducedMotion();
+
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  const bgY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    shouldReduce ? ["0%", "0%"] : ["0%", "20%"]
+  );
+  const contentY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    shouldReduce ? ["0%", "0%"] : ["0%", "-8%"]
+  );
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
   return (
-    <section className="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-charcoal text-cream">
-      {/* Background media layer */}
-      <div aria-hidden className="absolute inset-0 -z-10">
+    <section
+      ref={ref}
+      className="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-charcoal text-cream"
+    >
+      {/* Background media layer with parallax */}
+      <motion.div
+        aria-hidden
+        style={{ y: bgY }}
+        className="absolute inset-0 -z-10 h-[120%]"
+      >
         {hasVideo ? (
           <video
             autoPlay
@@ -31,7 +61,7 @@ export function Hero() {
           />
         )}
         {/* Warm gradient wash for text legibility */}
-        <div className="absolute inset-0 bg-gradient-to-b from-charcoal/50 via-charcoal/30 to-charcoal/80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-charcoal/50 via-charcoal/30 to-charcoal/85" />
         {/* Subtle grain */}
         <div
           className="absolute inset-0 opacity-[0.06] mix-blend-overlay"
@@ -40,13 +70,16 @@ export function Hero() {
               "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.9'/></svg>\")",
           }}
         />
-      </div>
+      </motion.div>
 
       {/* Spacer for fixed announcement bar (40px) + nav (68px) */}
       <div className="h-[108px]" />
 
       {/* Main hero content */}
-      <div className="container-content relative flex flex-1 flex-col justify-end pb-16 pt-12 sm:pb-24 sm:pt-20">
+      <motion.div
+        style={{ y: contentY, opacity: contentOpacity }}
+        className="container-content relative flex flex-1 flex-col justify-end pb-16 pt-12 sm:pb-24 sm:pt-20"
+      >
         <Reveal>
           <span className="inline-flex items-center gap-2 rounded-full border border-cream/25 bg-cream/10 px-3.5 py-1.5 text-[11.5px] font-semibold uppercase tracking-[0.16em] text-cream/95 backdrop-blur">
             <span className="h-1.5 w-1.5 rounded-full bg-clay-light" />
@@ -57,7 +90,13 @@ export function Hero() {
         <Reveal delay={0.05}>
           <h1 className="mt-6 max-w-4xl font-serif text-[46px] font-medium leading-[1.02] tracking-tight sm:text-[76px] md:text-[92px]">
             <span className="italic">Trusted</span> by{" "}
-            <span className="text-clay-light">30,000+</span> customers.
+            <Counter
+              value={30000}
+              suffix="+"
+              className="text-clay-light"
+              duration={1.6}
+            />{" "}
+            customers.
           </h1>
         </Reveal>
 
@@ -93,7 +132,7 @@ export function Hero() {
             {site.hero.stats.map((stat) => (
               <div
                 key={stat.label}
-                className="flex flex-col justify-center bg-charcoal/20 px-5 py-5 sm:px-7 sm:py-6"
+                className="flex flex-col justify-center bg-charcoal/20 px-5 py-5 transition-colors hover:bg-charcoal/10 sm:px-7 sm:py-6"
               >
                 <p className="font-serif text-[22px] font-medium leading-none text-cream sm:text-[28px]">
                   {stat.value}
@@ -105,7 +144,25 @@ export function Hero() {
             ))}
           </div>
         </Reveal>
-      </div>
+      </motion.div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        aria-hidden
+        initial={{ opacity: 0, y: -6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1, duration: 0.6 }}
+        className="pointer-events-none absolute inset-x-0 bottom-6 flex justify-center"
+      >
+        <motion.div
+          animate={shouldReduce ? undefined : { y: [0, 6, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.14em] text-cream/50"
+        >
+          Scroll
+          <ChevronDown size={14} />
+        </motion.div>
+      </motion.div>
     </section>
   );
 }
