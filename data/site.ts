@@ -10,18 +10,32 @@ export const site = {
   ],
   portalLink: { label: "Patient portal", href: "/portal" },
   primaryCta: { label: "Find my protocol", href: "/#cta" },
+  announcement: {
+    text: "New: baseline blood panel included in every protocol.",
+    href: "/#how-it-works",
+    cta: "See how it works",
+  },
   hero: {
-    eyebrow: "Physician-led peptide therapy · UAE",
-    title: "Peptide therapy, advised by doctors.",
-    titleAccent: "advised by doctors.",
+    eyebrow: "UAE's #1 Peptide Clinic",
+    title: "Trusted by 30,000+ customers.",
+    titleAccent: "30,000+ customers.",
     subtitle:
-      "Amino designs your peptide protocol from your bloodwork and a licensed physician's review — not a checkout quiz. Compounded fresh by a licensed UAE pharmacy, delivered cold-chain to your door.",
+      "Matched to your goals. Overseen by licensed physicians. Delivered to your door.",
     ctaPrimary: { label: "Find my protocol", href: "/#cta" },
     ctaSecondary: { label: "How it works", href: "/#how-it-works" },
     trustBadges: [
       "DHA-aligned",
       "MOHAP-licensed pharmacy",
       "Physician-reviewed",
+    ],
+    media: {
+      video: "",
+      poster: "",
+    },
+    stats: [
+      { value: "30,000+", label: "Customers served" },
+      { value: "Physician", label: "Reviewed cases" },
+      { value: "Cold-chain", label: "Delivered UAE-wide" },
     ],
   },
   howItWorks: {

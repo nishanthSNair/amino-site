@@ -13,7 +13,7 @@ export function Nav() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
+    const onScroll = () => setScrolled(window.scrollY > 40);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -26,24 +26,31 @@ export function Nav() {
     };
   }, [open]);
 
+  const overHero = !scrolled;
+
   return (
     <>
       <header
         className={clsx(
-          "fixed inset-x-0 top-0 z-40 transition-all duration-300",
+          "fixed inset-x-0 top-10 z-40 transition-all duration-300",
           scrolled
-            ? "border-b border-charcoal/[0.06] bg-cream/80 backdrop-blur-md"
+            ? "!top-0 border-b border-charcoal/[0.06] bg-cream/85 backdrop-blur-md"
             : "bg-transparent"
         )}
       >
         <div className="container-content flex h-[68px] items-center justify-between">
-          <Logo />
+          <Logo tone={overHero ? "cream" : "charcoal"} />
           <nav className="hidden items-center gap-8 md:flex">
             {site.nav.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-[14px] font-medium text-charcoal/65 transition-colors hover:text-charcoal"
+                className={clsx(
+                  "text-[14px] font-medium transition-colors",
+                  overHero
+                    ? "text-cream/80 hover:text-cream"
+                    : "text-charcoal/65 hover:text-charcoal"
+                )}
               >
                 {item.label}
               </Link>
@@ -52,18 +59,42 @@ export function Nav() {
           <div className="hidden items-center gap-2 md:flex">
             <Link
               href={site.portalLink.href}
-              className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white/60 px-4 py-2 text-[13px] font-medium text-charcoal/75 transition-all hover:border-charcoal/30 hover:bg-white"
+              className={clsx(
+                "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[13px] font-medium transition-all",
+                overHero
+                  ? "border-cream/25 bg-cream/10 text-cream/90 hover:bg-cream/20"
+                  : "border-charcoal/15 bg-white/60 text-charcoal/75 hover:border-charcoal/30 hover:bg-white"
+              )}
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-sage-deep" />
+              <span
+                className={clsx(
+                  "h-1.5 w-1.5 rounded-full",
+                  overHero ? "bg-clay-light" : "bg-sage-deep"
+                )}
+              />
               {site.portalLink.label}
             </Link>
-            <Button href={site.primaryCta.href} size="md" showArrow>
-              {site.primaryCta.label}
-            </Button>
+            {overHero ? (
+              <Button
+                href={site.primaryCta.href}
+                size="md"
+                showArrow
+                className="!bg-cream !text-charcoal hover:!bg-white"
+              >
+                {site.primaryCta.label}
+              </Button>
+            ) : (
+              <Button href={site.primaryCta.href} size="md" showArrow>
+                {site.primaryCta.label}
+              </Button>
+            )}
           </div>
           <button
             aria-label="Open menu"
-            className="rounded-full p-2 text-charcoal/70 md:hidden"
+            className={clsx(
+              "rounded-full p-2 md:hidden",
+              overHero ? "text-cream/90" : "text-charcoal/70"
+            )}
             onClick={() => setOpen(true)}
           >
             <Menu size={22} />

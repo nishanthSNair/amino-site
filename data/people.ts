@@ -26,6 +26,55 @@ export const physicians: Physician[] = [
   },
 ];
 
+export type VideoStory = {
+  name: string;
+  goal: string;
+  headline: string;
+  duration: string;
+  poster: string;
+  video: string;
+  tone: "clay" | "sage" | "charcoal";
+};
+
+export const videoStories: VideoStory[] = [
+  {
+    name: "Ahmed",
+    goal: "Recovery protocol",
+    headline: "Back to full training in eight weeks.",
+    duration: "1:24",
+    poster: "",
+    video: "",
+    tone: "clay",
+  },
+  {
+    name: "Layla",
+    goal: "Longevity protocol",
+    headline: "The intake felt like a proper clinic visit.",
+    duration: "0:58",
+    poster: "",
+    video: "",
+    tone: "sage",
+  },
+  {
+    name: "Karim",
+    goal: "Performance protocol",
+    headline: "Sleep changed by week two. Focus by week four.",
+    duration: "1:11",
+    poster: "",
+    video: "",
+    tone: "charcoal",
+  },
+  {
+    name: "Noura",
+    goal: "Post-GLP-1 taper",
+    headline: "No rebound. The physician built me a taper.",
+    duration: "1:36",
+    poster: "",
+    video: "",
+    tone: "clay",
+  },
+];
+
 export type Testimonial = {
   name: string;
   goal: string;

@@ -1,71 +1,108 @@
-import { BadgeCheck, ShieldCheck, Stethoscope } from "lucide-react";
 import { Button } from "@/components/ui";
 import { Reveal } from "@/components/motion";
 import { site } from "@/data/site";
 
-const badgeIcons = [ShieldCheck, BadgeCheck, Stethoscope];
-
 export function Hero() {
-  return (
-    <section className="relative overflow-hidden pt-32 pb-24 sm:pt-40 sm:pb-32">
-      {/* soft ambient orbs */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-40 -right-32 h-[520px] w-[520px] rounded-full bg-clay/25 blur-3xl animate-floatSlow"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -bottom-40 -left-24 h-[480px] w-[480px] rounded-full bg-sage/25 blur-3xl animate-floatSlow"
-        style={{ animationDelay: "-4s" }}
-      />
+  const { media } = site.hero;
+  const hasVideo = Boolean(media.video);
 
-      <div className="container-content relative">
+  return (
+    <section className="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-charcoal text-cream">
+      {/* Background media layer */}
+      <div aria-hidden className="absolute inset-0 -z-10">
+        {hasVideo ? (
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster={media.poster || undefined}
+            className="h-full w-full object-cover"
+          >
+            <source src={media.video} type="video/mp4" />
+          </video>
+        ) : (
+          <div
+            className="h-full w-full"
+            style={{
+              backgroundImage:
+                "radial-gradient(120% 80% at 20% 10%, #8E6448 0%, #5c3f2c 45%, #2A2A28 100%)",
+            }}
+          />
+        )}
+        {/* Warm gradient wash for text legibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-charcoal/50 via-charcoal/30 to-charcoal/80" />
+        {/* Subtle grain */}
+        <div
+          className="absolute inset-0 opacity-[0.06] mix-blend-overlay"
+          style={{
+            backgroundImage:
+              "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.9'/></svg>\")",
+          }}
+        />
+      </div>
+
+      {/* Spacer for fixed announcement bar (40px) + nav (68px) */}
+      <div className="h-[108px]" />
+
+      {/* Main hero content */}
+      <div className="container-content relative flex flex-1 flex-col justify-end pb-16 pt-12 sm:pb-24 sm:pt-20">
         <Reveal>
-          <p className="eyebrow mb-6 inline-flex items-center gap-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-clay" />
+          <span className="inline-flex items-center gap-2 rounded-full border border-cream/25 bg-cream/10 px-3.5 py-1.5 text-[11.5px] font-semibold uppercase tracking-[0.16em] text-cream/95 backdrop-blur">
+            <span className="h-1.5 w-1.5 rounded-full bg-clay-light" />
             {site.hero.eyebrow}
-          </p>
+          </span>
         </Reveal>
 
         <Reveal delay={0.05}>
-          <h1 className="max-w-4xl font-serif text-[44px] font-medium leading-[1.03] sm:text-[68px] md:text-[80px]">
-            Peptide therapy,{" "}
-            <span className="italic text-sage-deep">advised</span>{" "}
-            <span className="italic text-clay-deep">by doctors.</span>
+          <h1 className="mt-6 max-w-4xl font-serif text-[46px] font-medium leading-[1.02] tracking-tight sm:text-[76px] md:text-[92px]">
+            <span className="italic">Trusted</span> by{" "}
+            <span className="text-clay-light">30,000+</span> customers.
           </h1>
         </Reveal>
 
         <Reveal delay={0.1}>
-          <p className="mt-8 max-w-2xl text-[17px] leading-relaxed text-charcoal/70 sm:text-lg">
+          <p className="mt-8 max-w-xl text-[16px] leading-relaxed text-cream/80 sm:text-[18px]">
             {site.hero.subtitle}
           </p>
         </Reveal>
 
         <Reveal delay={0.15}>
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-            <Button href={site.hero.ctaPrimary.href} size="lg" showArrow>
+            <Button
+              href={site.hero.ctaPrimary.href}
+              size="lg"
+              showArrow
+              className="!bg-cream !text-charcoal hover:!bg-white"
+            >
               {site.hero.ctaPrimary.label}
             </Button>
-            <Button href={site.hero.ctaSecondary.href} size="lg" variant="outline">
+            <Button
+              href={site.hero.ctaSecondary.href}
+              size="lg"
+              className="!bg-transparent !border !border-cream/30 !text-cream hover:!bg-cream/10"
+            >
               {site.hero.ctaSecondary.label}
             </Button>
           </div>
         </Reveal>
 
-        <Reveal delay={0.2}>
-          <div className="mt-14 flex flex-wrap items-center gap-x-8 gap-y-3">
-            {site.hero.trustBadges.map((badge, i) => {
-              const Icon = badgeIcons[i % badgeIcons.length];
-              return (
-                <div
-                  key={badge}
-                  className="flex items-center gap-2 text-[13px] font-medium text-charcoal/60"
-                >
-                  <Icon size={15} className="text-sage-deep" />
-                  {badge}
-                </div>
-              );
-            })}
+        {/* Floating stat pills */}
+        <Reveal delay={0.25}>
+          <div className="mt-16 grid grid-cols-3 gap-px overflow-hidden rounded-2xl border border-cream/15 bg-cream/[0.06] backdrop-blur-md sm:mt-20">
+            {site.hero.stats.map((stat) => (
+              <div
+                key={stat.label}
+                className="flex flex-col justify-center bg-charcoal/20 px-5 py-5 sm:px-7 sm:py-6"
+              >
+                <p className="font-serif text-[22px] font-medium leading-none text-cream sm:text-[28px]">
+                  {stat.value}
+                </p>
+                <p className="mt-2 text-[11px] font-medium uppercase tracking-[0.14em] text-cream/65 sm:text-[12px]">
+                  {stat.label}
+                </p>
+              </div>
+            ))}
           </div>
         </Reveal>
       </div>
