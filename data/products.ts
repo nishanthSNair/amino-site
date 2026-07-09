@@ -34,6 +34,7 @@ export type Product = {
   slug: string;
   name: string;
   category: ProductCategory;
+  image?: string;
   peptideSequence?: string;
   molWeight?: string;
   tagline: string;
@@ -58,6 +59,7 @@ export const products: Product[] = [
   {
     slug: "bpc-157",
     name: "BPC-157",
+    image: "/images/products/bpc-157.png",
     category: "Repair",
     peptideSequence: "15 amino acids · gastric-derived",
     molWeight: "1419 Da",
@@ -133,6 +135,7 @@ export const products: Product[] = [
   {
     slug: "tb-500",
     name: "TB-500",
+    image: "/images/products/tb-500.png",
     category: "Repair",
     peptideSequence: "TB4 fragment · 17 amino acids",
     molWeight: "1751 Da",
@@ -208,6 +211,7 @@ export const products: Product[] = [
   {
     slug: "ghk-cu",
     name: "GHK-Cu",
+    image: "/images/products/ghk-cu.png",
     category: "Longevity",
     peptideSequence: "Tripeptide · copper-bound",
     molWeight: "402 Da",
@@ -283,6 +287,7 @@ export const products: Product[] = [
   {
     slug: "ipamorelin",
     name: "Ipamorelin",
+    image: "/images/products/ipamorelin.png",
     category: "Growth",
     peptideSequence: "5 amino acids · GH secretagogue",
     molWeight: "712 Da",
@@ -358,6 +363,7 @@ export const products: Product[] = [
   {
     slug: "sermorelin",
     name: "Sermorelin",
+    image: "/images/products/sermorelin.png",
     category: "Growth",
     peptideSequence: "29 amino acids · GHRH analogue",
     molWeight: "3358 Da",
@@ -433,6 +439,7 @@ export const products: Product[] = [
   {
     slug: "cjc-1295",
     name: "CJC-1295",
+    image: "/images/products/cjc-1295.png",
     category: "Growth",
     peptideSequence: "30 amino acids · GHRH analogue",
     molWeight: "3647 Da",
@@ -661,6 +668,7 @@ export const products: Product[] = [
   {
     slug: "semax",
     name: "Semax",
+    image: "/images/products/semax.png",
     category: "Cognitive",
     peptideSequence: "7 amino acids · ACTH fragment",
     molWeight: "813 Da",
@@ -811,6 +819,7 @@ export const products: Product[] = [
   {
     slug: "mots-c",
     name: "MOTS-c",
+    image: "/images/products/mots-c.png",
     category: "Metabolic",
     peptideSequence: "16 amino acids · mitochondrial-derived",
     molWeight: "2174 Da",
