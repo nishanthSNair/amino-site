@@ -30,6 +30,15 @@ export type ClaimCard = {
 
 export type Faq = { q: string; a: string };
 
+export type ResearchItem = {
+  topic: string;
+  summary: string;
+  authors?: string;
+  year?: string;
+  source?: string;
+  url?: string;
+};
+
 export type Product = {
   slug: string;
   name: string;
@@ -50,6 +59,7 @@ export type Product = {
     cycle: string;
     note: string;
   };
+  research?: ResearchItem[];
   faqs: Faq[];
   relatedProtocolSlugs: string[];
   relatedProductSlugs: string[];

@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 
-const sections = [
+type Section = { id: string; label: string };
+
+const protocolSections: Section[] = [
   { id: "overview", label: "Overview" },
   { id: "stack", label: "Stack" },
   { id: "cycle", label: "Cycle" },
@@ -12,8 +14,8 @@ const sections = [
   { id: "faq", label: "FAQ" },
 ];
 
-export function ProtocolSubnav() {
-  const [active, setActive] = useState("overview");
+export function StickySubnav({ sections }: { sections: Section[] }) {
+  const [active, setActive] = useState(sections[0]?.id ?? "");
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -31,7 +33,7 @@ export function ProtocolSubnav() {
       if (el) observer.observe(el);
     }
     return () => observer.disconnect();
-  }, []);
+  }, [sections]);
 
   return (
     <div className="sticky top-[108px] z-30 border-y border-charcoal/[0.06] bg-cream/85 backdrop-blur-md">
@@ -55,4 +57,9 @@ export function ProtocolSubnav() {
       </div>
     </div>
   );
+}
+
+// Backwards-compatible export used by /protocols/[slug]/page.tsx
+export function ProtocolSubnav() {
+  return <StickySubnav sections={protocolSections} />;
 }

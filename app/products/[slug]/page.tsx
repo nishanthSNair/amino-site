@@ -8,8 +8,10 @@ import {
   ClipboardList,
   Droplet,
   FlaskConical,
+  PhoneCall,
   Snowflake,
   Stethoscope,
+  Video,
 } from "lucide-react";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
@@ -19,8 +21,12 @@ import { Badge, Button } from "@/components/ui";
 import { ProductVisual } from "@/components/product-visual";
 import { PathwayIcon } from "@/components/pathway-icon";
 import { FaqAccordion } from "@/components/faq-accordion";
+import { StickySubnav } from "@/components/protocol-subnav";
+import { ProductResearch } from "@/components/product-research";
+import { ProductCallback } from "@/components/product-callback";
 import { products } from "@/data/products";
 import { protocols } from "@/data/protocols";
+import { researchLibrary } from "@/data/research";
 
 export function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
@@ -48,13 +54,29 @@ export default function ProductPage({
   const relatedProducts = products.filter((p) =>
     product.relatedProductSlugs.includes(p.slug)
   );
+  const hasResearch = Boolean(researchLibrary[product.slug]?.length);
+
+  const sections = [
+    { id: "overview", label: "Overview" },
+    { id: "mechanism", label: "Mechanism" },
+    { id: "dosing", label: "Dosing" },
+    ...(hasResearch ? [{ id: "research", label: "Research" }] : []),
+    ...(relatedProtocols.length
+      ? [{ id: "protocol", label: "In protocols" }]
+      : []),
+    { id: "callback", label: "Callback" },
+    { id: "faq", label: "FAQ" },
+  ];
 
   return (
-    <main>
+    <main className="bg-cream pb-24 md:pb-0">
       <Nav />
 
-      {/* HERO */}
-      <section className="pt-28 pb-16 sm:pt-32 sm:pb-20">
+      {/* ========== HERO ========== */}
+      <section
+        id="overview"
+        className="scroll-mt-32 pt-28 pb-14 sm:pt-32 sm:pb-16"
+      >
         <div className="container-content">
           <Reveal>
             <Link
@@ -65,17 +87,19 @@ export default function ProductPage({
             </Link>
           </Reveal>
 
-          <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
+          <div className="grid gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
+            {/* LEFT — product photo */}
             <Reveal>
-              <ProductVisual product={product} />
+              <ProductVisual product={product} className="group" />
             </Reveal>
 
+            {/* RIGHT — info + CTAs */}
             <Reveal delay={0.05}>
               <div className="flex h-full flex-col">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-charcoal/50">
                   {product.category}
                 </p>
-                <h1 className="mt-3 font-serif text-[44px] font-medium leading-[1.02] sm:text-[58px]">
+                <h1 className="mt-3 font-serif text-[44px] font-medium leading-[1.02] tracking-tight sm:text-[58px]">
                   {product.name}
                 </h1>
                 <p className="mt-5 font-serif text-[19px] italic leading-snug text-clay-deep">
@@ -85,7 +109,8 @@ export default function ProductPage({
                   {product.benefit}
                 </p>
 
-                <div className="mt-7 flex flex-wrap gap-2">
+                {/* Trust badges */}
+                <div className="mt-6 flex flex-wrap gap-2">
                   <Badge tone="clay">Rx · physician-reviewed</Badge>
                   <Badge tone="sage">
                     <Snowflake size={12} />
@@ -101,47 +126,71 @@ export default function ProductPage({
                   </Badge>
                 </div>
 
-                <dl className="mt-8 grid grid-cols-2 gap-3">
-                  <SpecCell
-                    label="Dose"
-                    value={product.dosing.label}
-                  />
-                  <SpecCell
+                {/* Spec grid — inline, dense */}
+                <dl className="mt-7 grid grid-cols-2 gap-2.5 rounded-xl2 border border-charcoal/[0.08] bg-white p-4 sm:grid-cols-4">
+                  <SpecInline label="Dose" value={product.dosing.label} />
+                  <SpecInline
                     label="Frequency"
-                    value={product.dosing.frequency}
+                    value={product.dosing.frequency.split(" · ")[0]}
                   />
-                  <SpecCell
+                  <SpecInline
                     label="Delivery"
-                    value={product.dosing.delivery}
+                    value={product.dosing.delivery.split(" · ")[0]}
                   />
-                  <SpecCell
+                  <SpecInline
                     label="Cycle"
-                    value={product.dosing.cycle}
+                    value={product.dosing.cycle.split(" · ")[0]}
                   />
                 </dl>
 
-                {relatedProtocols[0] && (
-                  <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                    <Button
-                      href={`/protocols/${relatedProtocols[0].slug}/quiz`}
-                      size="lg"
-                      showArrow
-                    >
-                      Take the intake quiz
-                    </Button>
-                    <Button
-                      href={`/protocols/${relatedProtocols[0].slug}`}
-                      size="lg"
-                      variant="outline"
-                    >
-                      See it in a protocol
-                    </Button>
-                  </div>
-                )}
-                <p className="mt-4 text-[12.5px] leading-relaxed text-charcoal/50">
+                {/* THE TWO PRIMARY CTAs */}
+                <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                  <Button
+                    href="#callback"
+                    size="lg"
+                    className="!bg-charcoal !text-cream hover:!bg-charcoal/90"
+                  >
+                    <PhoneCall size={16} />
+                    Buy now — get a callback
+                  </Button>
+                  <Button
+                    href="/consultation"
+                    size="lg"
+                    variant="outline"
+                  >
+                    <Video size={16} />
+                    Book a consultation
+                  </Button>
+                </div>
+                <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-[12px] text-charcoal/50">
+                  <span className="flex items-center gap-1">
+                    <Stethoscope size={12} /> Team calls back within 24 hours
+                  </span>
+                  <span>·</span>
+                  <span>
+                    Or{" "}
+                    {relatedProtocols[0] ? (
+                      <Link
+                        href={`/protocols/${relatedProtocols[0].slug}/quiz`}
+                        className="text-charcoal/75 underline decoration-clay/50 underline-offset-4 hover:decoration-clay"
+                      >
+                        take the 2-min intake quiz
+                      </Link>
+                    ) : (
+                      <Link
+                        href="/#cta"
+                        className="text-charcoal/75 underline decoration-clay/50 underline-offset-4 hover:decoration-clay"
+                      >
+                        take the 2-min intake quiz
+                      </Link>
+                    )}
+                  </span>
+                </div>
+
+                <p className="mt-6 text-[12.5px] leading-relaxed text-charcoal/50">
                   Every peptide requires a health intake, baseline blood panel
-                  and physician review. Compounded fresh by a fully licensed
-                  UAE compounding pharmacy regulated by MOH and EDE.
+                  and physician review. Compounded fresh by a licensed UAE
+                  compounding pharmacy regulated by MOH and EDE.
                 </p>
               </div>
             </Reveal>
@@ -149,28 +198,41 @@ export default function ProductPage({
         </div>
       </section>
 
-      {/* MECHANISM CARDS */}
-      <section className="border-t border-charcoal/[0.06] bg-cream py-24 sm:py-28">
+      {/* ========== STICKY SUB-NAV ========== */}
+      <StickySubnav sections={sections} />
+
+      {/* ========== MECHANISM ========== */}
+      <section
+        id="mechanism"
+        className="scroll-mt-32 border-t border-charcoal/[0.06] bg-white py-20 sm:py-24"
+      >
         <div className="container-content">
           <Reveal>
-            <p className="eyebrow">Mechanism of action</p>
-            <h2 className="mt-4 max-w-3xl font-serif text-[36px] font-medium leading-[1.08] sm:text-[46px]">
-              How {product.name}{" "}
-              <span className="italic text-sage-deep">signals.</span>
-            </h2>
+            <div className="flex flex-wrap items-end justify-between gap-6">
+              <div>
+                <p className="eyebrow">Mechanism of action</p>
+                <h2 className="mt-3 font-serif text-[34px] font-medium leading-[1.08] sm:text-[44px]">
+                  How {product.name}{" "}
+                  <span className="italic text-sage-deep">signals.</span>
+                </h2>
+              </div>
+              <p className="max-w-md text-[14.5px] leading-relaxed text-charcoal/60">
+                {product.mechanism}
+              </p>
+            </div>
           </Reveal>
 
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
+          <div className="mt-10 grid gap-4 md:grid-cols-3">
             {product.mechanismCards.map((card, i) => (
-              <Reveal key={card.title} delay={i * 0.05}>
-                <div className="flex h-full flex-col rounded-xl2 border border-charcoal/[0.06] bg-white p-8 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-lift">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-sage-faint text-sage-deep">
-                    <PathwayIcon name={card.icon} size={18} />
+              <Reveal key={card.title} delay={i * 0.04}>
+                <div className="flex h-full flex-col rounded-xl2 border border-charcoal/[0.06] bg-cream p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-lift">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-sage-faint text-sage-deep">
+                    <PathwayIcon name={card.icon} size={16} />
                   </div>
-                  <h3 className="mt-6 font-serif text-[22px] font-medium leading-snug">
+                  <h3 className="mt-5 font-serif text-[19px] font-medium leading-snug">
                     {card.title}
                   </h3>
-                  <p className="mt-3 text-[15px] leading-relaxed text-charcoal/65">
+                  <p className="mt-2 text-[14px] leading-relaxed text-charcoal/65">
                     {card.body}
                   </p>
                 </div>
@@ -178,66 +240,61 @@ export default function ProductPage({
             ))}
           </div>
 
+          {/* Compact why-physicians-reach strip */}
           <Reveal>
-            <p className="mt-10 max-w-3xl text-[15px] leading-relaxed text-charcoal/60">
-              {product.mechanism}
-            </p>
+            <div className="mt-10 grid gap-4 rounded-xl2 border border-charcoal/[0.08] bg-cream p-6 md:grid-cols-3 md:p-8">
+              <div className="md:col-span-1">
+                <p className="eyebrow">Why physicians reach for it</p>
+                <p className="mt-2 font-serif text-[20px] font-medium leading-snug">
+                  A prescription-grade lever,{" "}
+                  <span className="italic text-clay-deep">used with restraint.</span>
+                </p>
+              </div>
+              <div className="grid gap-4 md:col-span-2 md:grid-cols-3">
+                {product.claims.map((claim) => (
+                  <div
+                    key={claim.headline}
+                    className="rounded-xl border border-charcoal/[0.06] bg-white p-4"
+                  >
+                    <p className="font-serif text-[14.5px] font-medium leading-snug">
+                      {claim.headline}
+                    </p>
+                    <p className="mt-2 text-[12.5px] leading-relaxed text-charcoal/60">
+                      {claim.body}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </Reveal>
         </div>
       </section>
 
-      {/* WHY PHYSICIANS REACH FOR IT */}
-      <section className="py-24 sm:py-28">
+      {/* ========== DOSING ========== */}
+      <section
+        id="dosing"
+        className="scroll-mt-32 border-t border-charcoal/[0.06] bg-sage-faint/40 py-20 sm:py-24"
+      >
         <div className="container-content">
-          <Reveal>
-            <p className="eyebrow">Why physicians reach for it</p>
-            <h2 className="mt-4 max-w-3xl font-serif text-[36px] font-medium leading-[1.08] sm:text-[46px]">
-              A prescription-grade lever,{" "}
-              <span className="italic text-clay-deep">used with restraint.</span>
-            </h2>
-          </Reveal>
-
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
-            {product.claims.map((claim, i) => (
-              <Reveal key={claim.headline} delay={i * 0.05}>
-                <div className="flex h-full flex-col rounded-xl2 border border-charcoal/[0.06] bg-cream/60 p-8 transition-all duration-300 hover:bg-cream hover:shadow-soft">
-                  <h3 className="font-serif text-[22px] font-medium leading-snug">
-                    {claim.headline}
-                  </h3>
-                  <p className="mt-4 flex-1 text-[15px] leading-relaxed text-charcoal/70">
-                    {claim.body}
-                  </p>
-                  <p className="mt-6 border-t border-charcoal/[0.08] pt-4 text-[11.5px] font-medium uppercase tracking-[0.12em] text-charcoal/45">
-                    Source · {claim.source}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* DOSING FRAMEWORK */}
-      <section className="py-24 sm:py-28 bg-sage-faint/40">
-        <div className="container-content">
-          <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
+          <div className="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
             <Reveal>
               <p className="eyebrow">Dosing framework</p>
-              <h2 className="mt-4 font-serif text-[36px] font-medium leading-[1.08] sm:text-[44px]">
+              <h2 className="mt-3 font-serif text-[34px] font-medium leading-[1.08] sm:text-[42px]">
                 A framework,{" "}
-                <span className="italic text-sage-deep">not a prescription.</span>
+                <span className="italic text-sage-deep">
+                  not a prescription.
+                </span>
               </h2>
-              <p className="mt-6 max-w-md text-[15.5px] leading-relaxed text-charcoal/65">
-                What you see below is a representative framework Amino
-                physicians work from. Your actual protocol is designed —
-                dose, frequency, cycle length, delivery — from your intake
-                and baseline blood panel.
+              <p className="mt-5 max-w-md text-[15px] leading-relaxed text-charcoal/65">
+                Below is a representative framework Amino physicians work from.
+                Your actual protocol is designed — dose, frequency, cycle
+                length, delivery — from your intake and baseline blood panel.
               </p>
             </Reveal>
 
             <Reveal delay={0.05}>
-              <div className="rounded-xl2 border border-charcoal/[0.06] bg-white p-8 shadow-soft sm:p-10">
-                <div className="grid grid-cols-2 gap-x-8 gap-y-8">
+              <div className="rounded-xl2 border border-charcoal/[0.06] bg-white p-7 shadow-soft sm:p-8">
+                <div className="grid grid-cols-2 gap-x-6 gap-y-6">
                   <DoseSpec
                     label="Dose"
                     value={product.dosing.label}
@@ -259,12 +316,12 @@ export default function ProductPage({
                     icon={<Stethoscope size={14} />}
                   />
                 </div>
-                <div className="mt-10 flex items-start gap-3 rounded-xl2 bg-sage-faint p-5">
+                <div className="mt-8 flex items-start gap-3 rounded-xl bg-sage-faint p-4">
                   <BadgeCheck
-                    size={16}
+                    size={15}
                     className="mt-0.5 shrink-0 text-sage-deep"
                   />
-                  <p className="text-[13.5px] leading-relaxed text-sage-deep">
+                  <p className="text-[13px] leading-relaxed text-sage-deep">
                     {product.dosing.note}
                   </p>
                 </div>
@@ -274,48 +331,103 @@ export default function ProductPage({
         </div>
       </section>
 
-      {/* THE AMINO WAY */}
-      <section className="py-24 sm:py-28">
-        <div className="container-content">
-          <Reveal>
-            <p className="eyebrow">The Amino way</p>
-            <h2 className="mt-4 max-w-3xl font-serif text-[36px] font-medium leading-[1.08] sm:text-[46px]">
-              Three gates before a peptide is compounded.
-            </h2>
-          </Reveal>
+      {/* ========== RESEARCH ========== */}
+      {hasResearch && (
+        <ProductResearch
+          slug={product.slug}
+          productName={product.name}
+        />
+      )}
 
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
-            <StepCard
-              n="01"
-              title="Intake"
-              body="A 6-minute clinical intake covering history, medications, sleep, training and recent labs."
-            />
-            <StepCard
-              n="02"
-              title="Blood panel"
-              body="A longevity-grade panel — hormones, inflammation, metabolic and micronutrient markers — at a partnered UAE lab."
-              highlight
-            />
-            <StepCard
-              n="03"
-              title="Physician review"
-              body="A licensed physician designs, redesigns, or declines your protocol — in writing, within 48 hours."
-              highlight
-            />
+      {/* ========== IN PROTOCOLS ========== */}
+      {relatedProtocols.length > 0 && (
+        <section
+          id="protocol"
+          className="scroll-mt-32 border-t border-charcoal/[0.06] bg-white py-20 sm:py-24"
+        >
+          <div className="container-content">
+            <Reveal>
+              <div className="flex flex-wrap items-end justify-between gap-6">
+                <div>
+                  <p className="eyebrow">Where it sits</p>
+                  <h2 className="mt-3 font-serif text-[34px] font-medium leading-[1.08] sm:text-[44px]">
+                    {product.name} inside{" "}
+                    <span className="italic text-clay-deep">
+                      physician-designed protocols.
+                    </span>
+                  </h2>
+                </div>
+              </div>
+            </Reveal>
+
+            <div className="mt-10 grid gap-4 sm:grid-cols-2">
+              {relatedProtocols.map((p, i) => (
+                <Reveal key={p.slug} delay={i * 0.05}>
+                  <Link
+                    href={`/protocols/${p.slug}`}
+                    className="group flex h-full flex-col rounded-xl2 border border-charcoal/[0.06] bg-cream p-7 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-lift"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div
+                        className={`h-1.5 w-12 rounded-full ${
+                          p.accent === "clay" ? "bg-clay" : "bg-sage"
+                        }`}
+                      />
+                      <ArrowUpRight
+                        size={18}
+                        className="text-charcoal/30 transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-charcoal"
+                      />
+                    </div>
+                    <p className="mt-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-charcoal/45">
+                      {p.category}
+                    </p>
+                    <h3 className="mt-1 font-serif text-[22px] font-medium leading-tight">
+                      {p.name}
+                    </h3>
+                    <p className="mt-3 text-[13.5px] leading-relaxed text-charcoal/65">
+                      {p.outcome}
+                    </p>
+                    <div className="mt-5 flex flex-wrap gap-1.5">
+                      {p.peptides.map((pep) => (
+                        <span
+                          key={pep}
+                          className="rounded-full border border-charcoal/[0.08] bg-white px-2.5 py-1 text-[11.5px] font-medium text-charcoal/70"
+                        >
+                          {pep}
+                        </span>
+                      ))}
+                    </div>
+                  </Link>
+                </Reveal>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* FAQ */}
-      <section className="py-24 sm:py-28 bg-cream-deep/50">
+      {/* ========== CALLBACK FORM ========== */}
+      <ProductCallback productName={product.name} />
+
+      {/* ========== FAQ ========== */}
+      <section
+        id="faq"
+        className="scroll-mt-32 border-t border-charcoal/[0.06] bg-cream-deep/40 py-20 sm:py-24"
+      >
         <div className="container-content">
           <Reveal>
-            <div className="grid gap-6 lg:grid-cols-[360px_1fr] lg:gap-16">
+            <div className="grid gap-8 lg:grid-cols-[360px_1fr] lg:gap-16">
               <div>
                 <p className="eyebrow">FAQ</p>
-                <h2 className="mt-4 font-serif text-[36px] font-medium leading-[1.08] sm:text-[42px]">
-                  Common questions about {product.name}.
+                <h2 className="mt-3 font-serif text-[34px] font-medium leading-[1.08] sm:text-[42px]">
+                  Common questions on{" "}
+                  <span className="italic text-clay-deep">
+                    {product.name}.
+                  </span>
                 </h2>
+                <p className="mt-6 text-[14.5px] leading-relaxed text-charcoal/60">
+                  Still unsure? A physician will review your case within 48
+                  hours — no cost, no commitment.
+                </p>
               </div>
               <div>
                 <FaqAccordion items={product.faqs} />
@@ -325,14 +437,19 @@ export default function ProductPage({
         </div>
       </section>
 
-      {/* SAFETY */}
-      <section className="py-16">
+      {/* ========== SAFETY ========== */}
+      <section className="border-t border-charcoal/[0.06] py-12">
         <div className="container-content">
           <Reveal>
             <div className="flex items-start gap-4 rounded-xl2 border border-charcoal/[0.08] bg-white p-6">
-              <Stethoscope size={20} className="mt-0.5 shrink-0 text-clay-deep" />
+              <Stethoscope
+                size={20}
+                className="mt-0.5 shrink-0 text-clay-deep"
+              />
               <div>
-                <p className="font-medium text-charcoal">Safety & eligibility</p>
+                <p className="font-medium text-charcoal">
+                  Safety & eligibility
+                </p>
                 <p className="mt-1.5 text-[14px] leading-relaxed text-charcoal/65">
                   Amino serves adults 18+ following medical review. Peptides
                   are not appropriate during pregnancy or breastfeeding. Your
@@ -347,71 +464,15 @@ export default function ProductPage({
         </div>
       </section>
 
-      {/* ALSO INSIDE THESE PROTOCOLS */}
-      {relatedProtocols.length > 0 && (
-        <section className="py-24 sm:py-28">
-          <div className="container-content">
-            <Reveal>
-              <p className="eyebrow">Also inside these protocols</p>
-              <h2 className="mt-4 max-w-3xl font-serif text-[36px] font-medium leading-[1.08] sm:text-[44px]">
-                Where {product.name} is designed to sit.
-              </h2>
-            </Reveal>
-
-            <div className="mt-12 grid gap-5 sm:grid-cols-2">
-              {relatedProtocols.map((p, i) => (
-                <Reveal key={p.slug} delay={i * 0.05}>
-                  <Link
-                    href={`/protocols/${p.slug}`}
-                    className="group flex h-full flex-col rounded-xl2 border border-charcoal/[0.06] bg-white p-7 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-lift"
-                  >
-                    <div className="flex items-start justify-between">
-                      <div
-                        className={`h-1.5 w-12 rounded-full ${
-                          p.accent === "clay" ? "bg-clay" : "bg-sage"
-                        }`}
-                      />
-                      <ArrowUpRight
-                        size={18}
-                        className="text-charcoal/30 transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-charcoal"
-                      />
-                    </div>
-                    <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.16em] text-charcoal/45">
-                      {p.category}
-                    </p>
-                    <h3 className="mt-1 font-serif text-[24px] font-medium leading-tight">
-                      {p.name}
-                    </h3>
-                    <p className="mt-3 text-[14.5px] leading-relaxed text-charcoal/65">
-                      {p.outcome}
-                    </p>
-                    <div className="mt-5 flex flex-wrap gap-1.5">
-                      {p.peptides.map((pep) => (
-                        <span
-                          key={pep}
-                          className="rounded-full border border-charcoal/[0.08] bg-cream px-2.5 py-1 text-[11.5px] font-medium text-charcoal/70"
-                        >
-                          {pep}
-                        </span>
-                      ))}
-                    </div>
-                  </Link>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* RELATED PEPTIDES */}
+      {/* ========== RELATED PEPTIDES ========== */}
       {relatedProducts.length > 0 && (
-        <section className="pb-24 sm:pb-28">
+        <section className="pb-20 pt-8 sm:pb-24">
           <div className="container-content">
             <Reveal>
               <div className="flex items-baseline justify-between">
                 <div>
                   <p className="eyebrow">Related peptides</p>
-                  <h2 className="mt-4 font-serif text-[28px] font-medium leading-tight sm:text-[34px]">
+                  <h2 className="mt-3 font-serif text-[28px] font-medium leading-tight sm:text-[34px]">
                     Physicians often pair {product.name} with these.
                   </h2>
                 </div>
@@ -424,9 +485,9 @@ export default function ProductPage({
               </div>
             </Reveal>
 
-            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {relatedProducts.map((p, i) => (
-                <Reveal key={p.slug} delay={i * 0.05}>
+                <Reveal key={p.slug} delay={i * 0.04}>
                   <Link
                     href={`/products/${p.slug}`}
                     className="group flex h-full flex-col rounded-xl2 border border-charcoal/[0.06] bg-white p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-lift"
@@ -458,17 +519,35 @@ export default function ProductPage({
 
       <Cta />
       <Footer />
+
+      {/* ========== MOBILE STICKY CTA BAR ========== */}
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-charcoal/[0.08] bg-cream/95 backdrop-blur-md md:hidden">
+        <div className="container-content flex items-center gap-2 py-3">
+          <Link
+            href="#callback"
+            className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-charcoal px-4 py-2.5 text-[13px] font-medium text-cream shadow-soft"
+          >
+            <PhoneCall size={14} /> Callback
+          </Link>
+          <Link
+            href="/consultation"
+            className="flex flex-1 items-center justify-center gap-1.5 rounded-full border border-charcoal/15 bg-white/80 px-4 py-2.5 text-[13px] font-medium text-charcoal"
+          >
+            <Video size={14} /> Consultation
+          </Link>
+        </div>
+      </div>
     </main>
   );
 }
 
-function SpecCell({ label, value }: { label: string; value: string }) {
+function SpecInline({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl2 border border-charcoal/[0.06] bg-white p-4">
-      <p className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-charcoal/50">
+    <div className="min-w-0">
+      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-charcoal/45">
         {label}
       </p>
-      <p className="mt-1.5 font-serif text-[15px] font-medium leading-snug text-charcoal">
+      <p className="mt-0.5 truncate font-serif text-[14px] font-medium text-charcoal">
         {value}
       </p>
     </div>
@@ -490,47 +569,9 @@ function DoseSpec({
         {icon}
         {label}
       </p>
-      <p className="mt-2 font-serif text-[24px] font-medium leading-tight">
+      <p className="mt-2 font-serif text-[22px] font-medium leading-tight">
         {value}
       </p>
     </div>
-  );
-}
-
-function StepCard({
-  n,
-  title,
-  body,
-  highlight,
-}: {
-  n: string;
-  title: string;
-  body: string;
-  highlight?: boolean;
-}) {
-  return (
-    <Reveal>
-      <div
-        className={`flex h-full flex-col rounded-xl2 border p-8 transition-all duration-300 ${
-          highlight
-            ? "border-sage-deep/15 bg-sage-faint shadow-soft hover:-translate-y-1 hover:shadow-lift"
-            : "border-charcoal/[0.06] bg-white shadow-soft hover:-translate-y-1 hover:shadow-lift"
-        }`}
-      >
-        <p
-          className={`font-serif text-sm ${
-            highlight ? "text-sage-deep" : "text-charcoal/45"
-          }`}
-        >
-          {n}
-        </p>
-        <h3 className="mt-3 font-serif text-[22px] font-medium leading-snug">
-          {title}
-        </h3>
-        <p className="mt-3 text-[15px] leading-relaxed text-charcoal/65">
-          {body}
-        </p>
-      </div>
-    </Reveal>
   );
 }

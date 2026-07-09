@@ -10,6 +10,7 @@ import { site } from "@/data/site";
 export function Hero() {
   const { media } = site.hero;
   const hasVideo = Boolean(media.video);
+  const hasImage = Boolean(media.image);
   const ref = useRef<HTMLElement>(null);
   const shouldReduce = useReducedMotion();
 
@@ -51,6 +52,13 @@ export function Hero() {
           >
             <source src={media.video} type="video/mp4" />
           </video>
+        ) : hasImage ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={media.image}
+            alt=""
+            className="h-full w-full animate-kenburns object-cover"
+          />
         ) : (
           <div
             className="h-full w-full"
@@ -61,7 +69,9 @@ export function Hero() {
           />
         )}
         {/* Warm gradient wash for text legibility */}
-        <div className="absolute inset-0 bg-gradient-to-b from-charcoal/50 via-charcoal/30 to-charcoal/85" />
+        <div className="absolute inset-0 bg-gradient-to-b from-charcoal/40 via-charcoal/25 to-charcoal/90" />
+        {/* Left-side gradient so hero copy pops on any background */}
+        <div className="absolute inset-0 bg-gradient-to-r from-charcoal/60 via-charcoal/10 to-transparent" />
         {/* Subtle grain */}
         <div
           className="absolute inset-0 opacity-[0.06] mix-blend-overlay"
