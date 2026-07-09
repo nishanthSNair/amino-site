@@ -29,8 +29,9 @@ export const site = {
       "Physician-reviewed",
     ],
     media: {
-      video: "",
+      video: "/videos/Hero/Jogging.mp4",
       poster: "",
+      image: "",
     },
     stats: [
       { value: "30,000+", label: "Customers served" },

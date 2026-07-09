@@ -85,23 +85,44 @@ export function Science() {
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {physicians.map((doc, i) => (
             <Reveal key={doc.name} delay={i * 0.05}>
-              <div className="h-full rounded-xl2 border border-charcoal/[0.06] bg-white p-7 shadow-soft">
-                <div className="flex items-center gap-4">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-clay-soft font-serif text-lg font-medium text-clay-deep">
-                    {doc.initials}
-                  </div>
-                  <div className="min-w-0">
-                    <p className="font-serif text-[18px] font-medium leading-tight">
-                      {doc.name}
-                    </p>
-                    <p className="text-[12.5px] font-medium text-sage-deep">
-                      {doc.credential}
-                    </p>
-                  </div>
+              <div
+                className={`group relative h-full overflow-hidden rounded-xl2 border shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-lift ${
+                  doc.featured
+                    ? "border-sage-deep/20 bg-sage-faint"
+                    : "border-charcoal/[0.06] bg-white"
+                }`}
+              >
+                {doc.featured && (
+                  <span className="absolute right-4 top-4 z-10 inline-flex items-center gap-1 rounded-full bg-sage-deep px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-cream">
+                    Chief Medical Officer
+                  </span>
+                )}
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-clay-soft">
+                  {doc.image ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={doc.image}
+                      alt={doc.name}
+                      className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center font-serif text-4xl font-medium text-clay-deep">
+                      {doc.initials}
+                    </div>
+                  )}
+                  <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white/80 to-transparent" />
                 </div>
-                <p className="mt-5 text-[14.5px] leading-relaxed text-charcoal/65">
-                  {doc.bio}
-                </p>
+                <div className="p-6">
+                  <p className="font-serif text-[19px] font-medium leading-tight">
+                    {doc.name}
+                  </p>
+                  <p className="mt-1 text-[12.5px] font-medium text-sage-deep">
+                    {doc.credential}
+                  </p>
+                  <p className="mt-4 text-[14px] leading-relaxed text-charcoal/65">
+                    {doc.bio}
+                  </p>
+                </div>
               </div>
             </Reveal>
           ))}
