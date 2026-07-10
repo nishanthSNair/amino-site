@@ -4,6 +4,7 @@ import { Hero } from "@/components/hero";
 import { TrustStrip } from "@/components/trust-strip";
 import { HowItWorks } from "@/components/how-it-works";
 import { Protocols } from "@/components/protocols";
+import { BigNumbers } from "@/components/big-numbers";
 import { Products } from "@/components/products";
 import { Science } from "@/components/science";
 import { VideoStories } from "@/components/video-stories";
@@ -20,6 +21,7 @@ export default function Home() {
       <TrustStrip />
       <HowItWorks />
       <Protocols />
+      <BigNumbers />
       <Products />
       <Science />
       <VideoStories />

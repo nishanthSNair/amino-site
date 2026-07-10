@@ -27,58 +27,79 @@ export function Protocols() {
             <Reveal key={p.slug} delay={i * 0.04}>
               <Link
                 href={`/protocols/${p.slug}`}
-                className="group flex h-full flex-col rounded-xl2 border border-charcoal/[0.06] bg-white p-7 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-lift"
+                className="group flex h-full flex-col overflow-hidden rounded-xl2 border border-charcoal/[0.06] bg-white shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-lift"
               >
-                <div className="flex items-start justify-between">
+                {/* Protocol image */}
+                <div className="relative aspect-[5/4] w-full overflow-hidden bg-cream-deep">
+                  {p.image ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={p.image}
+                      alt={p.name}
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div
+                      className={clsx(
+                        "absolute inset-0",
+                        p.accent === "clay"
+                          ? "bg-gradient-to-br from-clay-soft to-clay/40"
+                          : "bg-gradient-to-br from-sage-faint to-sage/40"
+                      )}
+                    />
+                  )}
+                  <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-charcoal/50 to-transparent" />
                   <div
                     className={clsx(
-                      "h-1.5 w-12 rounded-full",
+                      "absolute left-4 top-4 h-1.5 w-12 rounded-full",
                       p.accent === "clay" ? "bg-clay" : "bg-sage"
                     )}
                   />
                   <ArrowUpRight
                     size={18}
-                    className="text-charcoal/30 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-charcoal"
+                    className="absolute right-4 top-4 text-cream/70 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-cream"
                   />
+                  <p className="absolute bottom-4 left-4 text-[10.5px] font-semibold uppercase tracking-[0.16em] text-cream/90">
+                    {p.category}
+                  </p>
                 </div>
 
-                <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.16em] text-charcoal/45">
-                  {p.category}
-                </p>
-                <h3 className="mt-1 font-serif text-[26px] font-medium leading-tight">
-                  {p.name}
-                </h3>
-                <p className="mt-3 text-[15px] leading-relaxed text-charcoal/65">
-                  {p.outcome}
-                </p>
+                <div className="flex flex-1 flex-col p-7">
+                  <h3 className="font-serif text-[26px] font-medium leading-tight">
+                    {p.name}
+                  </h3>
+                  <p className="mt-3 text-[15px] leading-relaxed text-charcoal/65">
+                    {p.outcome}
+                  </p>
 
-                <div className="mt-5 flex flex-wrap gap-1.5">
-                  {p.peptides.map((pep) => (
-                    <span
-                      key={pep}
-                      className="rounded-full border border-charcoal/[0.08] bg-cream px-2.5 py-1 text-[11.5px] font-medium text-charcoal/70"
-                    >
-                      {pep}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="mt-auto pt-7">
-                  <div className="hairline pt-5">
-                    <p className="text-[13px] leading-relaxed text-charcoal/55">
-                      <span className="font-medium text-charcoal/70">
-                        Who it&apos;s for:
-                      </span>{" "}
-                      {p.whoFor}
-                    </p>
-                    <div className="mt-4 flex items-center justify-between">
-                      <Badge tone="sage">
-                        <BadgeCheck size={12} />
-                        Physician-designed
-                      </Badge>
-                      <span className="text-[12.5px] font-semibold uppercase tracking-[0.12em] text-clay-deep transition-opacity group-hover:opacity-100 sm:opacity-70">
-                        Take the intake →
+                  <div className="mt-5 flex flex-wrap gap-1.5">
+                    {p.peptides.map((pep) => (
+                      <span
+                        key={pep}
+                        className="rounded-full border border-charcoal/[0.08] bg-cream px-2.5 py-1 text-[11.5px] font-medium text-charcoal/70"
+                      >
+                        {pep}
                       </span>
+                    ))}
+                  </div>
+
+                  <div className="mt-auto pt-7">
+                    <div className="hairline pt-5">
+                      <p className="text-[13px] leading-relaxed text-charcoal/55">
+                        <span className="font-medium text-charcoal/70">
+                          Who it&apos;s for:
+                        </span>{" "}
+                        {p.whoFor}
+                      </p>
+                      <div className="mt-4 flex items-center justify-between">
+                        <Badge tone="sage">
+                          <BadgeCheck size={12} />
+                          Physician-designed
+                        </Badge>
+                        <span className="text-[12.5px] font-semibold uppercase tracking-[0.12em] text-clay-deep transition-opacity group-hover:opacity-100 sm:opacity-70">
+                          Take the intake →
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>

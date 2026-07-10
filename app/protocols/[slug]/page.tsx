@@ -140,7 +140,20 @@ export default function ProtocolPage({
             {/* RIGHT: sticky-feeling info card */}
             <div className="lg:pl-6">
               <Reveal delay={0.1}>
-                <div className="rounded-xl2 border border-charcoal/[0.08] bg-white p-6 shadow-lift sm:p-7">
+                <div className="overflow-hidden rounded-xl2 border border-charcoal/[0.08] bg-white shadow-lift">
+                  {/* Protocol hero image */}
+                  {protocol.image && (
+                    <div className="relative aspect-[16/10] w-full overflow-hidden bg-cream-deep">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={protocol.image}
+                        alt={protocol.name}
+                        className="absolute inset-0 h-full w-full object-cover"
+                      />
+                      <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white/40 to-transparent" />
+                    </div>
+                  )}
+                  <div className="p-6 sm:p-7">
                   <div className="flex items-center justify-between">
                     <Badge tone="sage">
                       <BadgeCheck size={12} />
@@ -193,6 +206,7 @@ export default function ProtocolPage({
                         </li>
                       ))}
                     </ul>
+                  </div>
                   </div>
                 </div>
               </Reveal>

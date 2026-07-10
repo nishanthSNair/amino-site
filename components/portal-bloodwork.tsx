@@ -1,8 +1,41 @@
 "use client";
 
 import clsx from "clsx";
-import { ArrowDown, ArrowUp, CalendarClock, Droplet } from "lucide-react";
+import { ArrowDown, ArrowUp, CalendarClock, Droplet, Flame, Zap, Sparkles, HeartPulse } from "lucide-react";
 import { bloodMarkers, patient, type BloodMarker } from "@/data/portal";
+
+// Semantic groupings inspired by Superpower / Function Health
+type Group = {
+  id: string;
+  label: string;
+  description: string;
+  icon: typeof Flame;
+  markers: string[];
+};
+
+const groups: Group[] = [
+  {
+    id: "inflammation",
+    label: "Inflammation & metabolic",
+    description: "The clearest downstream signal of the recovery-repair protocol.",
+    icon: Flame,
+    markers: ["hs-CRP", "HbA1c"],
+  },
+  {
+    id: "endocrine",
+    label: "Endocrine & growth axis",
+    description: "Baseline hormone status and endogenous GH signalling.",
+    icon: HeartPulse,
+    markers: ["IGF-1", "Total Testosterone"],
+  },
+  {
+    id: "micronutrients",
+    label: "Micronutrients",
+    description: "Cofactors your physician is actively correcting.",
+    icon: Sparkles,
+    markers: ["Vitamin D (25-OH)", "Ferritin"],
+  },
+];
 
 function directionLabel(m: BloodMarker) {
   const delta = m.current - m.baseline;
@@ -75,50 +108,80 @@ export function PortalBloodwork() {
           </div>
         </div>
 
-        <ul className="mt-8 divide-y divide-charcoal/[0.06]">
-          {bloodMarkers.map((m) => {
-            const dir = directionLabel(m);
+        <div className="mt-8 space-y-8">
+          {groups.map((g) => {
+            const groupMarkers = bloodMarkers.filter((m) =>
+              g.markers.includes(m.name)
+            );
+            if (!groupMarkers.length) return null;
+            const Icon = g.icon;
             return (
-              <li key={m.name} className="grid gap-4 py-6 md:grid-cols-[240px_1fr]">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <p className="font-serif text-[19px] font-medium">
-                      {m.name}
+              <div key={g.id}>
+                <div className="flex items-start gap-3 border-b border-charcoal/[0.06] pb-4">
+                  <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-sage-faint text-sage-deep">
+                    <Icon size={15} />
+                  </span>
+                  <div>
+                    <p className="font-serif text-[17px] font-medium leading-tight">
+                      {g.label}
                     </p>
-                    <span
-                      className={clsx(
-                        "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-[0.12em]",
-                        dir.improved
-                          ? "bg-sage-faint text-sage-deep"
-                          : "bg-clay-soft text-clay-deep"
-                      )}
-                    >
-                      {dir.delta > 0 ? (
-                        <ArrowUp size={10} />
-                      ) : (
-                        <ArrowDown size={10} />
-                      )}
-                      {dir.pct}%
-                    </span>
+                    <p className="mt-1 text-[13px] leading-relaxed text-charcoal/55">
+                      {g.description}
+                    </p>
                   </div>
-                  <p className="mt-1 text-[12.5px] text-charcoal/55">
-                    {m.baseline}
-                    <span className="text-charcoal/40"> → </span>
-                    <span className="font-medium text-charcoal">
-                      {m.current}
-                    </span>{" "}
-                    {m.unit}
-                  </p>
-                  <p className="mt-3 text-[13px] leading-relaxed text-charcoal/60">
-                    {m.note}
-                  </p>
                 </div>
 
-                <MarkerBar marker={m} />
-              </li>
+                <ul className="divide-y divide-charcoal/[0.06]">
+                  {groupMarkers.map((m) => {
+                    const dir = directionLabel(m);
+                    return (
+                      <li
+                        key={m.name}
+                        className="grid gap-4 py-6 md:grid-cols-[240px_1fr]"
+                      >
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <p className="font-serif text-[19px] font-medium">
+                              {m.name}
+                            </p>
+                            <span
+                              className={clsx(
+                                "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-[0.12em]",
+                                dir.improved
+                                  ? "bg-sage-faint text-sage-deep"
+                                  : "bg-clay-soft text-clay-deep"
+                              )}
+                            >
+                              {dir.delta > 0 ? (
+                                <ArrowUp size={10} />
+                              ) : (
+                                <ArrowDown size={10} />
+                              )}
+                              {dir.pct}%
+                            </span>
+                          </div>
+                          <p className="mt-1 text-[12.5px] text-charcoal/55">
+                            {m.baseline}
+                            <span className="text-charcoal/40"> → </span>
+                            <span className="font-medium text-charcoal">
+                              {m.current}
+                            </span>{" "}
+                            {m.unit}
+                          </p>
+                          <p className="mt-3 text-[13px] leading-relaxed text-charcoal/60">
+                            {m.note}
+                          </p>
+                        </div>
+
+                        <MarkerBar marker={m} />
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
             );
           })}
-        </ul>
+        </div>
       </div>
 
       <div className="rounded-xl2 border border-charcoal/[0.08] bg-cream-deep/50 p-6">

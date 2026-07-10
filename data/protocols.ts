@@ -46,6 +46,7 @@ export type Protocol = {
   slug: string;
   name: string;
   category: string;
+  image?: string;
   outcome: string;
   peptides: string[];
   whoFor: string;
@@ -66,6 +67,7 @@ export const protocols: Protocol[] = [
     slug: "longevity-vitality",
     name: "Longevity & Vitality",
     category: "Longevity",
+    image: "/images/protocols/longevity-vitality.png",
     outcome:
       "A physician-designed stack that supports cellular repair, mitochondrial output and healthy aging markers.",
     peptides: ["Epithalon", "NAD+", "GHK-Cu"],
@@ -218,6 +220,7 @@ export const protocols: Protocol[] = [
     slug: "recovery-repair",
     name: "Recovery & Repair",
     category: "Recovery",
+    image: "/images/protocols/recovery-repair.png",
     outcome:
       "A targeted protocol built around soft-tissue repair, gut lining integrity and post-injury recovery.",
     peptides: ["BPC-157", "TB-500"],
@@ -363,6 +366,7 @@ export const protocols: Protocol[] = [
     slug: "growth-performance",
     name: "Growth & Performance",
     category: "Performance",
+    image: "/images/protocols/growth-performance.png",
     outcome:
       "A growth-hormone-secretagogue stack designed to support lean-mass composition, sleep and training output.",
     peptides: ["Ipamorelin", "Sermorelin", "CJC-1295"],
@@ -515,6 +519,7 @@ export const protocols: Protocol[] = [
     slug: "metabolic-post-glp1",
     name: "Metabolic & Post-GLP-1",
     category: "Metabolic",
+    image: "/images/protocols/metabolic-post-glp1.png",
     outcome:
       "A stack designed to support lean-mass preservation, mitochondrial output and metabolic health — during or after a GLP-1.",
     peptides: ["Ipamorelin", "MOTS-c", "NAD+"],
@@ -667,6 +672,7 @@ export const protocols: Protocol[] = [
     slug: "sexual-health",
     name: "Sexual Health",
     category: "Sexual Health",
+    image: "/images/protocols/sexual-health.png",
     outcome:
       "A discreet, physician-designed protocol focused on desire, arousal and confidence.",
     peptides: ["PT-141"],
@@ -788,6 +794,7 @@ export const protocols: Protocol[] = [
   {
     slug: "cognitive-focus",
     name: "Cognitive & Focus",
+    image: "/images/protocols/cognitive-focus.png",
     category: "Cognitive",
     outcome:
       "A calm, non-stimulant stack designed to support attention, mood stability and cognitive endurance.",

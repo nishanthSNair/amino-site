@@ -3,13 +3,14 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import clsx from "clsx";
-import { CalendarDays, Droplet, NotebookPen } from "lucide-react";
+import { Activity, CalendarDays, Droplet, NotebookPen } from "lucide-react";
 import { PortalSchedule } from "@/components/portal-schedule";
 import { PortalJournal } from "@/components/portal-journal";
 import { PortalBloodwork } from "@/components/portal-bloodwork";
+import { PortalPhysiology } from "@/components/portal-physiology";
 import { patient } from "@/data/portal";
 
-type Tab = "schedule" | "journal" | "bloodwork";
+type Tab = "physiology" | "schedule" | "journal" | "bloodwork";
 
 const tabs: {
   id: Tab;
@@ -17,6 +18,12 @@ const tabs: {
   icon: typeof CalendarDays;
   meta: string;
 }[] = [
+  {
+    id: "physiology",
+    label: "Physiology",
+    icon: Activity,
+    meta: "Body map · response curve",
+  },
   {
     id: "schedule",
     label: "Schedule",
@@ -38,7 +45,7 @@ const tabs: {
 ];
 
 export function PortalShell() {
-  const [tab, setTab] = useState<Tab>("schedule");
+  const [tab, setTab] = useState<Tab>("physiology");
 
   return (
     <>
@@ -94,6 +101,7 @@ export function PortalShell() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
         >
+          {tab === "physiology" && <PortalPhysiology />}
           {tab === "schedule" && <PortalSchedule />}
           {tab === "journal" && <PortalJournal />}
           {tab === "bloodwork" && <PortalBloodwork />}
