@@ -48,9 +48,15 @@ const config: Config = {
           "0%, 100%": { transform: "translate3d(0,0,0) scale(1)" },
           "50%": { transform: "translate3d(0,-14px,0) scale(1.03)" },
         },
+        kenburns: {
+          "0%": { transform: "scale(1.05) translate3d(0,0,0)" },
+          "50%": { transform: "scale(1.15) translate3d(-2%,-1%,0)" },
+          "100%": { transform: "scale(1.05) translate3d(0,0,0)" },
+        },
       },
       animation: {
         floatSlow: "floatSlow 14s ease-in-out infinite",
+        kenburns: "kenburns 22s ease-in-out infinite",
       },
     },
   },
