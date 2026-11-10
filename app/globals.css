@@ -4,39 +4,134 @@
 
 @layer base {
   html {
-    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
   }
   body {
-    @apply bg-cream text-charcoal font-sans antialiased;
-    font-feature-settings: "ss01", "cv11";
+    @apply bg-white font-sans text-navy-900 antialiased;
+    overflow-x: clip;
   }
   ::selection {
-    @apply bg-clay-light text-charcoal;
+    @apply bg-ice-300 text-navy-900;
   }
-  h1, h2, h3, h4 {
-    font-feature-settings: "ss01", "salt", "liga";
-    letter-spacing: -0.01em;
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  :focus-visible {
+    outline: 2px solid theme("colors.ice.400");
+    outline-offset: 3px;
   }
 }
 
 @layer components {
-  .container-content {
-    @apply mx-auto max-w-content px-5 sm:px-8;
+  .wrap {
+    @apply mx-auto w-full max-w-[1520px] px-4 sm:px-6 lg:px-10;
   }
-  .eyebrow {
-    @apply text-xs font-semibold uppercase tracking-[0.18em] text-sage-deep;
+  .display {
+    @apply font-semibold tracking-[-0.045em];
+    line-height: 0.98;
   }
-  .hairline {
-    @apply border-t border-charcoal/[0.08];
+  .tag {
+    @apply rounded-md px-2 py-1 font-mono text-[11px] uppercase tracking-[0.08em];
   }
+  .btn {
+    @apply inline-flex items-center justify-center rounded-full px-7 py-4 text-[15px] font-semibold tracking-[-0.01em] transition-transform duration-300 ease-out hover:scale-[1.04] active:scale-[0.98];
+  }
+}
+
+@keyframes pen-float {
+  0%,
+  100% {
+    transform: translate3d(0, -1.2%, 0) rotate(-0.8deg);
+  }
+  50% {
+    transform: translate3d(0, 1.2%, 0) rotate(0.8deg);
+  }
+}
+.pen-float {
+  animation: pen-float 7s ease-in-out infinite;
+  will-change: transform;
 }
 
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
+    animation: none !important;
     transition-duration: 0.001ms !important;
+  }
+}
+
+.chrome-home .nav-ink {
+  color: #fff;
+  transition: color 0.3s;
+}
+html[data-nav="light"] .chrome-home .nav-ink,
+.chrome-page .nav-ink {
+  color: #0a1e3d;
+}
+html[data-nav="light"] .chrome-home .nav-bar,
+.chrome-page .nav-bar {
+  background: rgba(255, 255, 255, 0.92);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+}
+.chrome-home.order-bar {
+  transform: translate(-50%, 140%);
+  opacity: 0;
+}
+html[data-bar="on"] .chrome-home.order-bar,
+.chrome-page.order-bar {
+  transform: translate(-50%, 0);
+  opacity: 1;
+}
+
+html,
+main {
+  overflow-x: clip;
+}
+
+/* Headline reveal: keep descenders inside the word mask. */
+.sw-mask {
+  padding-bottom: 0.16em;
+  margin-bottom: -0.16em;
+}
+
+/* Hero waits for its intro, and stays visible without JavaScript or motion. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-hero-fade],
+  [data-pen-intro] {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.film-in {
+  animation: film-in 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes film-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+}
+
+@media (max-width: 1023px) {
+  .pop-focus {
+    transform: translate3d(0, calc((1 - var(--f, 1)) * 12%), 0) rotate(calc((1 - var(--f, 1)) * 9deg)) scale(calc(0.86 + 0.14 * var(--f, 1)));
+  }
+  .step-pen {
+    transform: translate3d(calc(var(--p, 0) * (100vw - 32px - 170px)), 0, 0);
+  }
+  .step-fill {
+    transform: translateY(-50%) scaleX(var(--p, 0));
   }
 }

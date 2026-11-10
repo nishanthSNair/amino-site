@@ -1,0 +1,136 @@
+export type Physician = {
+  initials: string;
+  name: string;
+  credential: string;
+  bio: string;
+  image?: string;
+  featured?: boolean;
+};
+
+export const physicians: Physician[] = [
+  {
+    initials: "AV",
+    name: "Dr. Anant Vinjamoori",
+    credential: "Chief Medical Officer · Harvard-trained",
+    bio: "Harvard-trained physician and one of the most respected voices in longevity medicine. Dr. Anant has led clinical teams, shaped national health programs, and brought science-backed longevity care to thousands of patients across the U.S. — now leading Amino's clinical direction across the GCC.",
+    image: "/images/physicians/anant.png",
+    featured: true,
+  },
+  {
+    initials: "RM",
+    name: "Dr. Rayan Mohammed",
+    credential: "General Practitioner · Functional & Regenerative Medicine (AAFM, ABRM)",
+    bio: "Functional medicine physician and regenerative medicine specialist focused on root-cause diagnosis and metabolic health. Specializes in insulin resistance, hormonal imbalances, chronic inflammation, and fatigue — using advanced diagnostics and doctor-guided peptide therapy to build practical, sustainable treatment plans.",
+    image: "/images/physicians/rayan.jpg",
+  },
+  {
+    initials: "MM",
+    name: "Dr. Mahmoud",
+    credential: "General Practitioner · Functional Medicine Coach (MBBCh)",
+    bio: "MBBCh from Misr University with experience across patient care and healthcare management. Contributed to humanitarian pediatric health programs during the Syrian crisis. At Amino he interprets labs, develops wellness plans, and leads patient education — ACLS and ITLS certified.",
+    image: "/images/physicians/mahmoud.webp",
+  },
+];
+
+export type VideoStory = {
+  name: string;
+  goal: string;
+  headline: string;
+  duration: string;
+  poster: string;
+  video: string;
+  tone: "clay" | "sage" | "charcoal";
+};
+
+export const videoStories: VideoStory[] = [
+  {
+    name: "Ahmed",
+    goal: "Recovery protocol",
+    headline: "Back to full training in eight weeks.",
+    duration: "1:24",
+    poster: "",
+    video: "",
+    tone: "clay",
+  },
+  {
+    name: "Layla",
+    goal: "Longevity protocol",
+    headline: "The intake felt like a proper clinic visit.",
+    duration: "0:58",
+    poster: "",
+    video: "",
+    tone: "sage",
+  },
+  {
+    name: "Karim",
+    goal: "Performance protocol",
+    headline: "Sleep changed by week two. Focus by week four.",
+    duration: "1:11",
+    poster: "",
+    video: "",
+    tone: "charcoal",
+  },
+  {
+    name: "Noura",
+    goal: "Post-GLP-1 taper",
+    headline: "No rebound. The physician built me a taper.",
+    duration: "1:36",
+    poster: "",
+    video: "",
+    tone: "clay",
+  },
+];
+
+export type Testimonial = {
+  name: string;
+  goal: string;
+  quote: string;
+  stars: number;
+  highlight?: boolean;
+};
+
+export const testimonials: Testimonial[] = [
+  {
+    name: "Ahmed",
+    goal: "Recovery",
+    quote:
+      "Two prior clinics sold me a stack in a checkout. Amino ordered bloodwork first and the physician actually changed what I asked for — and explained why.",
+    stars: 5,
+    highlight: true,
+  },
+  {
+    name: "Layla",
+    goal: "Longevity",
+    quote:
+      "The intake was serious. The panel was serious. The follow-up call with the physician was serious. Everything about it feels like a clinic, not a store.",
+    stars: 5,
+  },
+  {
+    name: "Karim",
+    goal: "Performance",
+    quote:
+      "Deeper sleep by week two. But what I actually value is that a physician re-reviews my case every cycle instead of auto-refilling.",
+    stars: 5,
+  },
+  {
+    name: "Noura",
+    goal: "Post-GLP-1",
+    quote:
+      "I came off a GLP-1 and did not want the rebound. The Amino physician designed a taper protocol I could not have found anywhere else in the UAE.",
+    stars: 5,
+  },
+  {
+    name: "Yousef",
+    goal: "Cognitive",
+    quote:
+      "Wanted focus without stimulants. The physician spent 40 minutes on my intake before prescribing anything. That's the bar I'd been looking for.",
+    stars: 5,
+  },
+  {
+    name: "Mariam",
+    goal: "Vitality",
+    quote:
+      "Cold-chain delivery, separate pens, clear dosing labels. It feels engineered by pharmacists and doctors — because it is.",
+    stars: 5,
+  },
+];
