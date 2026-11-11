@@ -4,14 +4,15 @@ import { useState } from "react";
 import clsx from "clsx";
 import { Rail } from "@/components/rail";
 import { FilmTile } from "@/components/film-tile";
+import { YouTubeTile } from "@/components/youtube-tile";
 import { clientFilms, doctorFilms } from "@/data/videos";
 
-/** One section with Clients and Doctors tabs, in place of two long sections. */
-export function FilmSection({ doctors }: { doctors: string[] }) {
-  const [tab, setTab] = useState<"clients" | "doctors">("clients");
+/** One section with Doctors and Clients tabs. Doctor films come from the Valeo Health channel. */
+export function FilmSection() {
+  const [tab, setTab] = useState<"doctors" | "clients">("doctors");
   const tabs = [
-    ["clients", "Real clients"],
     ["doctors", "Our doctors"],
+    ["clients", "Real clients"],
   ] as const;
   return (
     <section className="wrap pb-16 lg:pb-24">
@@ -34,16 +35,16 @@ export function FilmSection({ doctors }: { doctors: string[] }) {
         </div>
       </div>
       <div key={tab} className="film-in mt-8">
-        {tab === "clients" ? (
-          <Rail className="lg:grid lg:grid-cols-4 lg:gap-4">
-            {clientFilms.map((f, i) => (
-              <FilmTile key={i} src={f.src} poster={f.poster} label="Client film" />
+        {tab === "doctors" ? (
+          <Rail className="lg:grid lg:grid-cols-3 lg:gap-5">
+            {doctorFilms.map((f) => (
+              <YouTubeTile key={f.id} {...f} />
             ))}
           </Rail>
         ) : (
-          <Rail className="lg:grid lg:grid-cols-3 lg:gap-4">
-            {doctorFilms.map((f) => (
-              <FilmTile key={f.doctor} src={f.src} poster={f.poster} label={doctors[f.doctor] ?? "Doctor"} />
+          <Rail className="lg:grid lg:grid-cols-4 lg:gap-4">
+            {clientFilms.map((f, i) => (
+              <FilmTile key={i} src={f.src} poster={f.poster} label="Client film" />
             ))}
           </Rail>
         )}

@@ -9,6 +9,7 @@ import { Steps } from "@/components/steps";
 import { Plans } from "@/components/plans";
 import { FilmSection } from "@/components/film-section";
 import { ConsultCta } from "@/components/consult-cta";
+import { Press } from "@/components/press";
 import { Footer } from "@/components/footer";
 
 const heading = "display text-[52px] sm:text-[80px] lg:text-[112px]";
@@ -116,7 +117,9 @@ export default function Home() {
         </Rail>
       </section>
 
-      <FilmSection doctors={physicians.map((d) => d.name)} />
+      <FilmSection />
+
+      <Press />
 
       <section className="wrap text-center">
         <h2 data-split className={heading}>
