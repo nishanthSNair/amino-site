@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { WaButton } from "@/components/wa-button";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { aed, peptideBySlug, PROTOCOL_AED, protocolBySlug, protocols } from "@/data/catalog";
@@ -36,9 +37,12 @@ export default function ProtocolPage({ params }: Props) {
               {aed(PROTOCOL_AED)}
               <span className="text-[20px] font-medium tracking-[-0.02em] text-navy-600">/month</span>
             </p>
-            <Link href={`/order?item=${p.slug}`} className="btn mt-5 bg-navy-900 text-white">
-              Order now
-            </Link>
+            <div className="mt-5 flex flex-wrap gap-2.5 md:justify-end">
+              <Link href={`/order?item=${p.slug}`} className="btn bg-navy-900 text-white">
+                Order now
+              </Link>
+              <WaButton text={`Hi Amino, I'd like to order ${p.name}.`} />
+            </div>
           </div>
         </section>
 

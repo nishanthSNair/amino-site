@@ -3,6 +3,8 @@
 import { useMemo, useState, type FormEvent } from "react";
 import { useSearchParams } from "next/navigation";
 import clsx from "clsx";
+import { waLink } from "@/data/contact";
+import { WaIcon } from "@/components/wa-icon";
 import { aed, BLOOD_TEST_AED, peptides, PRICE_AED, PROTOCOL_AED, PROTOCOL_QUARTER_AED, protocols, QUARTER_AED } from "@/data/catalog";
 
 type Plan = "monthly" | "quarter";
@@ -145,6 +147,15 @@ export function OrderFlow() {
           <button type="submit" form="order" className="btn mt-8 w-full bg-white text-navy-900">
             Order now
           </button>
+          <a
+            href={waLink(`Hi Amino, I'd like to order ${name}, ${quarter ? "3-month plan" : "monthly plan"}.`)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn mt-2.5 w-full gap-2 bg-white/10 text-white ring-1 ring-white/20"
+          >
+            <WaIcon className="h-5 w-5 text-[#25D366]" />
+            Order on WhatsApp
+          </a>
           <p className="mt-4 text-[13px] leading-relaxed text-ice-200">
             A licensed physician reviews every order before anything ships. Full refund if your doctor declines.
           </p>

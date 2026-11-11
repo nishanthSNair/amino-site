@@ -94,6 +94,45 @@ html[data-bar="on"] .chrome-home.order-bar,
   opacity: 1;
 }
 
+/* WhatsApp button: sits above the full-width Order bar on phones, beside it on
+   wider screens, and waits for the bar on the homepage. */
+:root {
+  --wa-bottom: calc(max(16px, env(safe-area-inset-bottom)) + 76px);
+}
+@media (min-width: 640px) {
+  :root {
+    --wa-bottom: max(16px, env(safe-area-inset-bottom));
+  }
+}
+.wa-solo {
+  --wa-bottom: max(16px, env(safe-area-inset-bottom));
+}
+.wa-fab {
+  bottom: var(--wa-bottom);
+}
+.wa-sheet {
+  bottom: calc(var(--wa-bottom) + 68px);
+}
+.chrome-home.wa-fab {
+  transform: translateY(24px) scale(0.6);
+  opacity: 0;
+  pointer-events: none;
+}
+html[data-bar="on"] .chrome-home.wa-fab {
+  transform: none;
+  opacity: 1;
+  pointer-events: auto;
+}
+@keyframes wa-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+.wa-in {
+  animation: wa-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 html,
 main {
   overflow-x: clip;

@@ -9,6 +9,7 @@ import { Steps } from "@/components/steps";
 import { Plans } from "@/components/plans";
 import { FilmSection } from "@/components/film-section";
 import { ConsultCta } from "@/components/consult-cta";
+import { MatchTeaser } from "@/components/match-teaser";
 import { Press } from "@/components/press";
 import { Footer } from "@/components/footer";
 
@@ -73,6 +74,8 @@ export default function Home() {
           ))}
         </Rail>
       </section>
+
+      <MatchTeaser />
 
       <ConsultCta />
 

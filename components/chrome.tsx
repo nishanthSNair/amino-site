@@ -3,14 +3,17 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { aed, PRICE_AED } from "@/data/catalog";
+import { WaChat } from "@/components/wa-chat";
 
 /**
  * Nav and the floating Order bar. On the homepage the hero scene sets
  * data-nav and data-bar on <html>; other pages use the light defaults.
  */
 export function Chrome() {
-  const home = usePathname() === "/";
-  const order = usePathname() === "/order";
+  const path = usePathname();
+  const home = path === "/";
+  const order = path === "/order";
+  const match = path === "/match";
   const scope = home ? "chrome-home" : "chrome-page";
 
   return (
@@ -35,7 +38,9 @@ export function Chrome() {
         </div>
       </header>
 
-      {!order && (
+      {!match && <WaChat scope={scope} solo={order} />}
+
+      {!order && !match && (
         <Link
           href="/order"
           className={`${scope} order-bar fixed bottom-[max(16px,env(safe-area-inset-bottom))] left-1/2 z-40 flex w-[min(420px,calc(100vw-32px))] items-center justify-between rounded-[22px] bg-white py-2.5 pl-6 pr-2.5 shadow-[0_18px_50px_-12px_rgba(10,30,61,0.4)] transition-all duration-500 ease-out`}
