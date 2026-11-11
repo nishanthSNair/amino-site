@@ -25,7 +25,7 @@ export const physicians: Physician[] = [
   },
   {
     initials: "MM",
-    name: "Dr. Mahmoud",
+    name: "Dr. Mahmoud Musa",
     credential: "General Practitioner · Functional Medicine Coach (MBBCh)",
     bio: "MBBCh from Misr University with experience across patient care and healthcare management. Contributed to humanitarian pediatric health programs during the Syrian crisis. At Amino he interprets labs, develops wellness plans, and leads patient education — ACLS and ITLS certified.",
     image: "/images/physicians/mahmoud.webp",

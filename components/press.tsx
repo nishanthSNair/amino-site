@@ -1,4 +1,4 @@
-import { press } from "@/data/press";
+import { featuredPress, press } from "@/data/press";
 import { Rail } from "@/components/rail";
 
 export function Press() {
@@ -10,7 +10,37 @@ export function Press() {
         </h2>
         <p className="text-[15px] text-navy-600">Amino is powered by Valeo Health.</p>
       </div>
-      <Rail className="mt-8 lg:grid lg:grid-cols-5 lg:gap-4">
+      <div className="mt-8 grid gap-3 lg:grid-cols-2 lg:gap-4">
+        {featuredPress.map((p) => (
+          <a
+            key={p.url}
+            href={p.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-reveal
+            className="group relative flex flex-col justify-between gap-10 overflow-hidden rounded-tile p-7 text-white sm:p-10"
+            style={{ background: "linear-gradient(160deg,#3A5680 0%,#1B2C48 100%)" }}
+          >
+            <div className="flex items-center justify-between gap-3 font-mono text-[11px] uppercase tracking-[0.1em] text-ice-200">
+              <span className="font-medium text-white">{p.outlet}</span>
+              {p.date && <span>{p.date}</span>}
+            </div>
+            <blockquote className="text-[22px] font-medium leading-snug tracking-[-0.02em] sm:text-[28px]">
+              <span aria-hidden className="mr-1 text-ice-300">“</span>
+              {p.quote}
+              <span aria-hidden className="ml-1 text-ice-300">”</span>
+            </blockquote>
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <p className="text-[16px] font-semibold">{p.who}</p>
+                <p className="text-[14px] text-ice-200">{p.role}</p>
+              </div>
+              <span className="text-[14px] font-medium text-ice-100 transition-transform duration-300 group-hover:translate-x-1">Read in {p.outlet} ↗</span>
+            </div>
+          </a>
+        ))}
+      </div>
+      <Rail className="mt-4 lg:grid lg:grid-cols-5 lg:gap-4">
         {press.map((p) => (
           <a
             key={p.url}
