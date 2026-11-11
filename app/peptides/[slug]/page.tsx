@@ -2,7 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { aed, peptideBySlug, peptides, PRICE_AED } from "@/data/catalog";
+import { aed, hasPen, peptideBySlug, peptides, PRICE_AED } from "@/data/catalog";
+import { PEN_VIDEO } from "@/data/videos";
+import { YouTubeTile } from "@/components/youtube-tile";
 import { researchLibrary } from "@/data/research";
 import { toneStyle } from "@/components/tile";
 import { Footer } from "@/components/footer";
@@ -51,6 +53,19 @@ export default function PeptidePage({ params }: Props) {
             </Link>
           </div>
         </section>
+
+        {hasPen(p.slug) && (
+          <section className="grid gap-8 border-t border-navy-900/10 py-14 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:items-center lg:gap-14">
+            <YouTubeTile {...PEN_VIDEO} full />
+            <div className="order-first lg:order-none">
+              <h2 className="display text-[44px] sm:text-[64px]">How to use your pen.</h2>
+              <p className="mt-4 max-w-[38ch] text-lg text-navy-600">A short guide from the Valeo Health clinical team. Your {p.name} comes in its own capped pen.</p>
+              <Link href="/consult" className="btn mt-7 border border-navy-900/15 text-navy-900 hover:bg-ice-50">
+                Questions? Book a free call
+              </Link>
+            </div>
+          </section>
+        )}
 
         {research.length > 0 && (
           <section className="grid gap-3 pb-20 md:grid-cols-3">

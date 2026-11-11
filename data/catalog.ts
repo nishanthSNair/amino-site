@@ -52,5 +52,9 @@ export const protocols: Protocol[] = [
   { slug: "sexual-health", name: "Sexual Health", line: "Built around intimacy.", peptides: ["pt-141"], tone: "frost" },
 ];
 
+// Shown without a pen: Semax (route still to be confirmed) and KPV (topical only).
+export const noPen = new Set(["semax", "kpv"]);
+export const hasPen = (slug: string) => !noPen.has(slug);
+
 export const peptideBySlug = (slug: string) => peptides.find((p) => p.slug === slug);
 export const protocolBySlug = (slug: string) => protocols.find((p) => p.slug === slug);

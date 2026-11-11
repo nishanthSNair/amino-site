@@ -3,7 +3,7 @@ import { Rail } from "@/components/rail";
 
 export function Press() {
   return (
-    <section className="wrap pb-16 lg:pb-24">
+    <section id="press" className="wrap scroll-mt-24 pb-16 lg:pb-24">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <h2 data-split className="display text-[52px] sm:text-[80px] lg:text-[112px]">
           Valeo in the press.

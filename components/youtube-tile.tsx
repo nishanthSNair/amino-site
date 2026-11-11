@@ -3,10 +3,10 @@
 import { useState } from "react";
 
 /** Lightweight YouTube tile: shows the thumbnail and only loads the player when tapped. */
-export function YouTubeTile({ id, title, by }: { id: string; title: string; by: string }) {
+export function YouTubeTile({ id, title, by, full }: { id: string; title: string; by: string; full?: boolean }) {
   const [playing, setPlaying] = useState(false);
   return (
-    <figure className="w-[80vw] max-w-[360px] shrink-0 snap-start lg:w-auto lg:max-w-none">
+    <figure className={full ? "w-full" : "w-[80vw] max-w-[360px] shrink-0 snap-start lg:w-auto lg:max-w-none"}>
       <div className="relative aspect-video overflow-hidden rounded-[26px] bg-navy-900">
         {playing ? (
           <iframe
