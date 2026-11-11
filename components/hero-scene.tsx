@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { gsap } from "@/lib/gsap";
 import { aed, PRICE_AED } from "@/data/catalog";
-import { HERO_BG, HERO_FRAMES_DESKTOP, HERO_FRAMES_MOBILE } from "@/data/hero";
+import { HERO_BG, HERO_FRAMES_DESKTOP, HERO_FRAMES_MOBILE, HERO_GRADIENT, HERO_STOPS } from "@/data/hero";
 import { Pen } from "@/components/pen";
 
 const WORD_CENTER = 0.48; // vertical centre of the letters in the rendered frames
@@ -32,6 +32,25 @@ export function HeroScene() {
     let h = 0;
     let cy = 0;
     let lastKey = "";
+    const backdrop = document.createElement("canvas");
+
+    const paintBackdrop = () => {
+      backdrop.width = Math.max(1, Math.round(w / 2));
+      backdrop.height = Math.max(1, Math.round(h / 2));
+      const b = backdrop.getContext("2d")!;
+      const bw = backdrop.width;
+      const bh = backdrop.height;
+      b.fillStyle = HERO_BG;
+      b.fillRect(0, 0, bw, bh);
+      b.save();
+      b.translate(bw * 0.5, bh * 0.42);
+      b.scale((0.85 * bw) / (0.75 * bh), 1);
+      const g = b.createRadialGradient(0, 0, 0, 0, 0, 0.75 * bh);
+      HERO_STOPS.forEach(([at, col]) => g.addColorStop(at, col));
+      b.fillStyle = g;
+      b.fillRect(-bw * 2, -bh * 2, bw * 4, bh * 4);
+      b.restore();
+    };
 
     const layout = () => {
       w = section.clientWidth;
@@ -53,6 +72,7 @@ export function HeroScene() {
       section.style.setProperty("--frame-top", `${y}px`);
       section.style.setProperty("--frame-bottom", `${y + drawH}px`);
       section.style.setProperty("--feather", `${feather}px`);
+      paintBackdrop();
       lastKey = "";
     };
 
@@ -65,10 +85,13 @@ export function HeroScene() {
       const fa = frames[a];
       if (!fa) return;
       lastKey = key;
-      c.clearRect(0, 0, w, h);
+      c.globalCompositeOperation = "source-over";
+      c.globalAlpha = 1;
+      c.drawImage(backdrop, 0, 0, w, h);
       if (state.alpha <= 0.01) return;
       const drawH = (w * 9) / 16;
       const y = cy - WORD_CENTER * drawH;
+      c.globalCompositeOperation = "screen";
       c.globalAlpha = state.alpha;
       c.drawImage(fa, 0, y, w, drawH);
       const fb = frames[b];
@@ -78,6 +101,7 @@ export function HeroScene() {
         c.drawImage(fb, 0, y, w, drawH);
       }
       c.globalAlpha = 1;
+      c.globalCompositeOperation = "source-over";
     };
 
     layout();
@@ -180,11 +204,9 @@ export function HeroScene() {
     <section
       ref={root}
       className="relative h-[100svh] min-h-[560px] overflow-hidden text-white"
-      style={{ background: HERO_BG, ["--fit" as string]: "20vw", ["--cy" as string]: "43svh", ["--left" as string]: "3vw", ["--pen" as string]: "60svh" }}
+      style={{ background: `${HERO_GRADIENT}, ${HERO_BG}`, ["--fit" as string]: "20vw", ["--cy" as string]: "43svh", ["--left" as string]: "3vw", ["--pen" as string]: "60svh" }}
     >
       <canvas ref={canvasRef} aria-hidden className="absolute inset-0 h-full w-full" />
-      <div aria-hidden className="absolute inset-x-0" style={{ top: "calc(var(--frame-top, 0px) - 1px)", height: "var(--feather, 0px)", background: `linear-gradient(180deg, ${HERO_BG}, ${HERO_BG}00)` }} />
-      <div aria-hidden className="absolute inset-x-0" style={{ top: "calc(var(--frame-bottom, 100%) - var(--feather, 0px) + 1px)", height: "var(--feather, 0px)", background: `linear-gradient(0deg, ${HERO_BG}, ${HERO_BG}00)` }} />
       <div
         data-dawn-ice
         aria-hidden

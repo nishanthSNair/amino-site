@@ -8,7 +8,7 @@ export function ConsultCta() {
     <section className="wrap pb-16 lg:pb-24">
       <div data-reveal className="grid overflow-hidden rounded-tile bg-navy-950 text-white lg:min-h-[600px] lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
         <div className="relative flex flex-col justify-between gap-12 p-7 sm:p-10 lg:p-12">
-          <div aria-hidden className="absolute inset-0" style={{ background: "radial-gradient(90% 70% at 10% 100%, rgba(79,195,255,.22), rgba(79,195,255,0) 60%), linear-gradient(160deg,#12305A 0%,#051126 100%)" }} />
+          <div aria-hidden className="absolute inset-0" style={{ background: "radial-gradient(90% 70% at 10% 100%, rgba(79,195,255,.22), rgba(79,195,255,0) 60%), linear-gradient(160deg,#3A5680 0%,#1B2C48 100%)" }} />
           <div className="relative">
             <p className="display text-[34px] text-ice-200/70 sm:text-[44px] lg:text-[52px]">Not sure where to start?</p>
             <h2 className="display mt-2 text-[34px] sm:text-[44px] lg:text-[52px]">Talk to a doctor first.</h2>

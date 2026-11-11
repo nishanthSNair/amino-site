@@ -119,7 +119,7 @@ export function OrderFlow() {
       </div>
 
       <aside className="lg:sticky lg:top-28 lg:self-start">
-        <div className="rounded-tile p-8 text-white" style={{ background: "linear-gradient(160deg,#12305A 0%,#051126 100%)" }}>
+        <div className="rounded-tile p-8 text-white" style={{ background: "linear-gradient(160deg,#3A5680 0%,#1B2C48 100%)" }}>
           <p className="text-[28px] font-semibold tracking-[-0.04em]">{name}</p>
           <dl className="mt-6 space-y-3 text-[15px]">
             <div className="flex justify-between gap-4">

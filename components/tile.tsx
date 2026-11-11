@@ -4,7 +4,7 @@ import clsx from "clsx";
 import type { Tone } from "@/data/catalog";
 
 const tones: Record<Tone, { bg: string; ink: string; tag: string }> = {
-  navy: { bg: "linear-gradient(160deg,#12305A 0%,#051126 100%)", ink: "text-white", tag: "bg-white/15 text-white" },
+  navy: { bg: "linear-gradient(160deg,#3A5680 0%,#1B2C48 100%)", ink: "text-white", tag: "bg-white/15 text-white" },
   azure: { bg: "linear-gradient(160deg,#6FBDE8 0%,#1F5F9E 100%)", ink: "text-white", tag: "bg-white/20 text-white" },
   ice: { bg: "linear-gradient(170deg,#A9DFFB 0%,#E8F7FF 100%)", ink: "text-navy-900", tag: "bg-white/50 text-navy-900" },
   frost: { bg: "linear-gradient(170deg,#F1FAFF 0%,#B8E7FF 100%)", ink: "text-navy-900", tag: "bg-navy-900/10 text-navy-900" },

@@ -3,7 +3,7 @@ export function FilmTile({ src, poster, label }: { src: string | null; poster?: 
   return (
     <div
       className="relative aspect-[9/14] w-[60vw] max-w-[260px] shrink-0 snap-start overflow-hidden rounded-tile text-white lg:aspect-[4/3] lg:w-auto lg:max-w-none"
-      style={{ background: "linear-gradient(160deg,#12305A 0%,#051126 100%)" }}
+      style={{ background: "linear-gradient(160deg,#3A5680 0%,#1B2C48 100%)" }}
     >
       {src ? (
         <video src={src} poster={poster} controls playsInline preload="none" className="absolute inset-0 h-full w-full object-cover" />
